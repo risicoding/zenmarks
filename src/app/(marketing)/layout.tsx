@@ -1,7 +1,12 @@
-const MarketingLayout = ({children}:{children:Readonly<React.ReactNode>}) => {
-  return (
-    <div>{children}</div>
-  )
-}
+import { auth } from "@clerk/nextjs/server";
 
-export default MarketingLayout
+const MarketingLayout = async ({
+  children,
+}: {
+  children: Readonly<React.ReactNode>;
+}) => {
+  console.log(await auth());
+  return <div>{children}</div>;
+};
+
+export default MarketingLayout;

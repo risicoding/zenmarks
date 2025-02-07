@@ -1,5 +1,6 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import "@/styles/globals.css";
+import { TRPCProvider } from "@/trpc/client";
 
 const RootLayout = ({ children }: { children: Readonly<React.ReactNode> }) => {
   return (
@@ -10,7 +11,9 @@ const RootLayout = ({ children }: { children: Readonly<React.ReactNode> }) => {
       signUpForceRedirectUrl="/dashboard"
     >
       <html>
-        <body>{children}</body>
+        <body className="">
+          <TRPCProvider>{children}</TRPCProvider>
+        </body>
       </html>
     </ClerkProvider>
   );
