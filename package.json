@@ -8,6 +8,7 @@
     "check": "next lint && tsc --noEmit",
     "db:generate": "drizzle-kit generate --config=drizzle.config.ts",
     "db:push": "drizzle-kit push --config=drizzle.config.ts",
+    "db:migrate": "drizzle-kit migrate --config=drizzle.config.ts",
     "db:studio": "drizzle-kit studio",
     "dev": "next dev --turbopack",
     "lint": "next lint",
@@ -26,6 +27,7 @@
     "@radix-ui/react-checkbox": "^1.1.4",
     "@radix-ui/react-context-menu": "^2.2.6",
     "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-dropdown-menu": "^2.1.6",
     "@radix-ui/react-hover-card": "^1.1.6",
     "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-menubar": "^1.1.6",
@@ -87,11 +89,6 @@
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^3.4.17",
-    "tsc": "^2.0.4",
     "typescript": "^5.7.3"
-  },
-  "ct3aMetadata": {
-    "initVersion": "7.38.1"
-  },
-  "packageManager": "pnpm@10.2.0"
+  }
 }

@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 
 // Menu items.
 const items = [
@@ -70,7 +70,7 @@ export function AppSidebar() {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link href='/dashboard/1'>
+                  <Link href='/dashboard/'>
                   <Cloud />
                   <span>All bookmarks</span>
                   </Link>

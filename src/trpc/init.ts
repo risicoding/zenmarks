@@ -28,6 +28,5 @@ export const protectedProcedure = t.procedure.use(async (opts) => {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
-  opts.ctx.userId = userId;
-  return opts.next();
+  return opts.next({ ctx: { ...opts.ctx, userId } });
 });

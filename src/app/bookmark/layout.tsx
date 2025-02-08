@@ -1,5 +1,5 @@
-import { AppSidebar } from "@/components/dashboard/app-sidebar";
-import Navbar from "@/components/dashboard/navbar";
+import { AppSidebar } from "@/modules/dashboard/components/app-sidebar";
+import Navbar from "@/modules/dashboard/components/navbar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 const DashboardLayout = ({
