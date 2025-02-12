@@ -1,12 +1,5 @@
-import {
-  Calendar,
-  Cloud,
-  Home,
-  Inbox,
-  Search,
-  Settings,
-  Star,
-} from "lucide-react";
+"use client";
+import { Cloud, PlusIcon, Star } from "lucide-react";
 
 import {
   Sidebar,
@@ -22,37 +15,12 @@ import {
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
-
-// Menu items.
-const items = [
-  {
-    title: "Home",
-    url: "#",
-    icon: Home,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-];
+import { trpc } from "@/trpc/client";
+import AddFolder from "../folders/add-folder";
+import FolderAction from "../folders/folder-action";
 
 export function AppSidebar() {
+  const folders = trpc.folder.getAll.useQuery();
   return (
     <Sidebar>
       <SidebarHeader className="p-4">
@@ -70,32 +38,41 @@ export function AppSidebar() {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link href='/dashboard/'>
-                  <Cloud />
-                  <span>All bookmarks</span>
+                  <Link href="/bookmark">
+                    <Cloud />
+                    <span>All bookmarks</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <Star />
-                  <span>Favourites</span>
+                <SidebarMenuButton asChild>
+                  <Link href="/bookmark/favourites">
+                    <Star />
+                    <span>Favourites</span>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel className="flex items-center justify-between">
+            Folders
+            <AddFolder>
+              <PlusIcon className="size-4" />
+            </AddFolder>
+          </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
+            <SidebarMenu className="py-3">
+              {folders?.data?.map((folder) => (
+                <SidebarMenuItem key={folder.id}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
+                    <div className="flex justify-between">
+                      <Link href={`/bookmark/folder/${folder.id}`}>
+                        {folder.name}
+                      </Link>
+                      <FolderAction id={folder.id} />
+                    </div>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

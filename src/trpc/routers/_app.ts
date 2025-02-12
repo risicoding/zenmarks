@@ -1,7 +1,8 @@
-import { baseProcedure, createTRPCRouter, protectedProcedure } from "../init";
+import { createTRPCRouter } from "../init";
 import { bookmarkRouter } from "./bookmark";
+import { folderRouter } from "./folder";
 export const appRouter = createTRPCRouter({
-  hello:protectedProcedure.query(()=>'hello'),
   bookmark: bookmarkRouter,
+  folder: folderRouter,
 });
 export type AppRouter = typeof appRouter;

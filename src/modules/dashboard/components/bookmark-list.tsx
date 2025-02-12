@@ -7,51 +7,40 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Pen, TrashIcon } from "lucide-react";
+import { MoreHorizontal, Pen, Star, TrashIcon } from "lucide-react";
 import { trpc } from "@/trpc/client";
-import { BookmarkType } from "@/db/schema";
+import type { BookmarkType } from "@/db/schema";
 
-interface BookmarkProps {
-  id: number;
-  url: string;
-  title: string;
-  image?: string | null;
-}
+type BookmarkProps = Omit<
+  BookmarkType,
+  "userId" | "folderId" | "createdAt" | "updatedAt"
+>;
 
-interface BookmarkListProps {
+type BookmarkListProps = {
   bookmarks: BookmarkProps[];
-}
-
-type BookmarkQueryType = {
-  id: number;
-  url: string;
-  title: string;
-  image: string | null;
-  userId: string;
-  createdAt: string | null; // Note: string instead of Date
-  updatedAt: string | null;
 };
 
-const Bookmark: React.FC<BookmarkProps> = ({ id, url, title, image }) => {
+// type BookmarkQueryType = inferRouterOutputs<AppRouter>["bookmark"]["query"];
+
+const Bookmark = ({ id, url, title  }: BookmarkProps) => {
   const utils = trpc.useUtils();
-  const { mutate } = trpc.bookmark.delete.useMutation({
+  const deleteMutation = trpc.bookmark.delete.useMutation({
     onMutate: async () => {
       await utils.bookmark.query.cancel();
       const data = utils.bookmark.query.getData();
 
-      utils.bookmark.query.setData(
-        undefined,
-        (old?: { res: BookmarkQueryType[] }) => {
-          if (!old) return { res: [] };
-          return { res: old.res.filter((itx) => itx.id !== id) };
-        },
-      );
+      utils.bookmark.query.setData(undefined, (old) => {
+        if (!old) return { res: [] };
+        return { res: old.res.filter((itx) => itx.id !== id) };
+      });
       return data;
     },
     onSuccess: () => {
       utils.bookmark.query.invalidate();
     },
   });
+
+  const updateMutation = trpc.bookmark.update.useMutation({});
 
   return (
     <a
@@ -61,13 +50,8 @@ const Bookmark: React.FC<BookmarkProps> = ({ id, url, title, image }) => {
       className="flex items-center gap-4 rounded-lg border border-gray-200 p-4 transition hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-800"
     >
       <Avatar className="">
-          <AvatarImage
-            src={`${url}/favicon.ico`}
-            alt={title}
-          />
-          <AvatarFallback className="">
-            {title.slice(0,2)}
-          </AvatarFallback>
+        <AvatarImage src={`${url}/favicon.ico`} alt={title} />
+        <AvatarFallback className="">{title.slice(0, 2)}</AvatarFallback>
       </Avatar>
       <div className="flex-1">
         <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
@@ -83,10 +67,17 @@ const Bookmark: React.FC<BookmarkProps> = ({ id, url, title, image }) => {
           <DropdownMenuContent className="mr-2">
             <DropdownMenuItem
               onClick={() => {
-                mutate({ id });
+                deleteMutation.mutate({ id });
               }}
             >
               <TrashIcon /> Delete
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                updateMutation.mutate({ id, isFavourite: true });
+              }}
+            >
+              <Star /> Favourite
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Pen /> Edit
@@ -108,6 +99,7 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ bookmarks }) => {
           url={bookmark.url}
           title={bookmark.title}
           image={bookmark.image}
+          isFavourite={bookmark.isFavourite}
         />
       ))}
     </div>

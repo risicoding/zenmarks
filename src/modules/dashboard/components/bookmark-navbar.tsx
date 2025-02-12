@@ -11,11 +11,15 @@ import { PlusIcon } from "lucide-react";
 
 interface BookmarkNavbarProps {
   title: string;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   count?: number;
   folderId: string;
 }
-const BookmarkNavbar = ({ title, icon, count }: BookmarkNavbarProps) => {
+const BookmarkNavbar = ({
+  title,
+  icon,
+  count,
+}: BookmarkNavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="flex items-center justify-between gap-2">
@@ -26,7 +30,9 @@ const BookmarkNavbar = ({ title, icon, count }: BookmarkNavbarProps) => {
       </div>
       <Popover onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
-          <Button size='icon'><PlusIcon/></Button>
+          <Button size="icon">
+            <PlusIcon />
+          </Button>
         </PopoverTrigger>
         {isOpen && (
           <PopoverContent className="mr-4">

@@ -1,7 +1,7 @@
 CREATE TABLE "bookmarks" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "bookmarks_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"id" text PRIMARY KEY DEFAULT 'KgcPbviKTR6tr6sltBf27' NOT NULL,
 	"userId" text NOT NULL,
-	"folderId" integer,
+	"folderId" text,
 	"title" varchar(255) NOT NULL,
 	"url" text NOT NULL,
 	"image" text,
@@ -10,8 +10,9 @@ CREATE TABLE "bookmarks" (
 );
 --> statement-breakpoint
 CREATE TABLE "folders" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "folders_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"id" text PRIMARY KEY DEFAULT 'Fz8re2xgxQOvRf6FRq72U' NOT NULL,
 	"name" text NOT NULL,
+	"slug" text NOT NULL,
 	"userId" text NOT NULL,
 	"createdAt" timestamp DEFAULT now(),
 	"updatedAt" timestamp DEFAULT now()

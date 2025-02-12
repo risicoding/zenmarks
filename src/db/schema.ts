@@ -1,27 +1,29 @@
 import type { InferSelectModel } from "drizzle-orm";
 import {
-  integer,
   timestamp,
   text,
   pgTable,
   varchar,
+  boolean,
 } from "drizzle-orm/pg-core";
 import { createSelectSchema } from "drizzle-zod";
 
 export const bookmarks = pgTable("bookmarks", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: text().primaryKey(),
   userId: text().notNull(),
-  folderId: integer().references(() => folders.id),
+  folderId: text().references(() => folders.id, { onDelete: "cascade" }),
   title: varchar({ length: 255 }).notNull(),
   url: text().notNull(),
   image: text(),
+  isFavourite: boolean().default(false),
   createdAt: timestamp().defaultNow(),
   updatedAt: timestamp().defaultNow(),
 });
 
 export const folders = pgTable("folders", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: text().primaryKey(),
   name: text().notNull(),
+  slug: text().notNull(),
   userId: text().notNull(),
   createdAt: timestamp().defaultNow(),
   updatedAt: timestamp().defaultNow(),

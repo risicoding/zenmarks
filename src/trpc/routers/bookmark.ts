@@ -1,25 +1,33 @@
-import { bookmarkInputSchema, bookmarks } from "@/db/schema";
+import { bookmarks } from "@/db/schema";
 import { createTRPCRouter, protectedProcedure } from "../init";
 import { db } from "@/db";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { convertToHttps } from "@/lib/url";
 import { scrapeTitle } from "@/lib/title";
 import { z } from "zod";
+import { nanoid } from "nanoid";
+
+const bookmarkSchema = z.object({
+  id: z.string(),
+  url: z.string().optional(),
+  title: z.string().optional(),
+  image: z.string().optional(),
+  isFavourite: z.boolean().optional(),
+});
 
 export const bookmarkRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(bookmarkInputSchema.pick({ url: true }))
+    .input(z.object({ url: z.string(), folderId: z.string().optional() }))
     .mutation(async (opts) => {
-      const { url } = opts.input;
+      const { url, folderId } = opts.input;
       const { userId } = opts.ctx;
-
       const formattedUrl = convertToHttps(url);
 
       const title = (await scrapeTitle(formattedUrl)) ?? url;
 
       const res = await db
         .insert(bookmarks)
-        .values({ url: formattedUrl, title, userId })
+        .values({ id: nanoid(), url: formattedUrl, title, folderId, userId })
         .returning();
       console.log(res);
       return res;
@@ -38,14 +46,48 @@ export const bookmarkRouter = createTRPCRouter({
   }),
 
   delete: protectedProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.string() }))
     .mutation(async (opts) => {
       const { id } = opts.input;
+      const { userId } = opts.ctx;
 
       const res = await db
         .delete(bookmarks)
-        .where(eq(bookmarks.id, id))
+        .where(and(eq(bookmarks.id, id), eq(bookmarks.userId, userId)))
         .returning();
       return res;
     }),
+  update: protectedProcedure.input(bookmarkSchema).mutation(async (opts) => {
+    const data = opts.input;
+    const { userId } = opts.ctx;
+    const res = await db
+      .update(bookmarks)
+      .set(data)
+      .where(and(eq(bookmarks.id, data.id), eq(bookmarks.userId, userId)))
+      .returning();
+    console.log(res);
+    return res;
+  }),
+  getByFolder: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async (opts) => {
+      const { id } = opts.input;
+      const { userId } = opts.ctx;
+
+      const res = await db
+        .select()
+        .from(bookmarks)
+        .where(and(eq(bookmarks.folderId, id), eq(bookmarks.userId, userId)));
+      return res;
+    }),
+  getFavourites: protectedProcedure.query(async (opts) => {
+    const { userId } = opts.ctx;
+    const res = await db
+      .select()
+      .from(bookmarks)
+      .where(
+        and(eq(bookmarks.isFavourite, true), eq(bookmarks.userId, userId)),
+      );
+    return res;
+  }),
 });

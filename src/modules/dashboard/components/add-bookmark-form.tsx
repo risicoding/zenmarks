@@ -14,8 +14,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { bookmarkInputSchema } from "@/db/schema";
 import { trpc } from "@/trpc/client";
+import { BookmarkCommand } from "./add-bookmark-command";
 
 const relaxedURLRegex = new RegExp(
   "^(https?://)?" + // protocol
@@ -27,10 +27,11 @@ const relaxedURLRegex = new RegExp(
   "i",
 ); // fragment locator
 
-const inputSchema = z.object({
+export const inputSchema = z.object({
   url: z
     .string()
     .refine((val) => relaxedURLRegex.test(val), { message: "Invallid URL" }),
+  folderId: z.string().optional(),
 });
 const AddBookmarkForm = ({ onClose }: { onClose: () => void }) => {
   const form = useForm<z.infer<typeof inputSchema>>({
@@ -40,17 +41,18 @@ const AddBookmarkForm = ({ onClose }: { onClose: () => void }) => {
     },
   });
 
-  const { data: res, mutateAsync } = trpc.bookmark.create.useMutation();
   const utils = trpc.useUtils();
 
-  const onSubmit = async(data: z.infer<typeof inputSchema>) => {
+  const { mutateAsync } = trpc.bookmark.create.useMutation({
+    onSuccess: () => {
+      utils.bookmark.invalidate();
+      onClose();
+    },
+  });
+
+  const onSubmit = async (data: z.infer<typeof inputSchema>) => {
     console.log(data);
-    await mutateAsync(data, {
-      onSuccess: () => {
-        utils.bookmark.invalidate();
-        onClose();
-      },
-    });
+    await mutateAsync(data);
   };
 
   return (
@@ -72,6 +74,21 @@ const AddBookmarkForm = ({ onClose }: { onClose: () => void }) => {
                 />
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="folderId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Folder</FormLabel>
+              <FormControl>
+                <BookmarkCommand
+                  value={field.value}
+                  onChange={field.onChange}
+                />
+              </FormControl>
             </FormItem>
           )}
         />

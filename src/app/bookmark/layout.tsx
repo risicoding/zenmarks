@@ -1,6 +1,6 @@
 import { AppSidebar } from "@/modules/dashboard/components/app-sidebar";
 import Navbar from "@/modules/dashboard/components/navbar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 const DashboardLayout = ({
   children,
@@ -11,9 +11,10 @@ const DashboardLayout = ({
     <div>
       <SidebarProvider>
         <AppSidebar />
-        <div className="flex-col w-full">
-        <Navbar />
-{children}</div>
+        <div className="w-full flex-col">
+          <Navbar />
+          {children}
+        </div>
       </SidebarProvider>
     </div>
   );
