@@ -30,7 +30,8 @@ export const folderRouter = createTRPCRouter({
     const res = await db
       .select()
       .from(folders)
-      .where(eq(folders.userId, userId)).orderBy(folders.createdAt)
+      .where(eq(folders.userId, userId))
+      .orderBy(folders.createdAt);
     return res;
   }),
 
@@ -56,17 +57,19 @@ export const folderRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
-        name: z.string(),
+        name: z.string().optional(),
+        icon: z.string().optional(),
       }),
     )
     .mutation(async (opts) => {
-      const { id, name } = opts.input;
+      const { id, name, icon } = opts.input;
       const { userId } = opts.ctx;
       const res = await db
         .update(folders)
-        .set({ name })
+        .set({ name, icon })
         .where(and(eq(folders.id, id), eq(folders.userId, userId)))
         .returning();
+    console.log(res)
       return res[0] ?? null;
     }),
 
@@ -79,7 +82,7 @@ export const folderRouter = createTRPCRouter({
     )
     .mutation(async (opts) => {
       const { id } = opts.input;
-    console.log(id)
+      console.log(id);
       const { userId } = opts.ctx;
       const res = await db
         .delete(folders)

@@ -9,6 +9,8 @@ import {
 import { trpc } from "@/trpc/client";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import React from "react";
+import { IconRenderer } from "./icon-picker";
+import { IconPickerDialog } from "./icon-picker-dialog";
 
 const FolderAction = ({ id }: { id: string }) => {
   const utils = trpc.useUtils();
@@ -52,6 +54,14 @@ const FolderAction = ({ id }: { id: string }) => {
         <DropdownMenuItem>
           <Edit />
           <span>Edit</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <IconPickerDialog id={id}>
+            <div className="relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0">
+              <IconRenderer icon="PhotoIcon" />
+              Icon
+            </div>
+          </IconPickerDialog>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

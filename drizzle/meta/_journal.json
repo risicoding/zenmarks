@@ -22,6 +22,20 @@
       "when": 1739336513875,
       "tag": "0002_big_mordo",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1739368612395,
+      "tag": "0003_aberrant_blacklash",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1739370233129,
+      "tag": "0004_tiresome_magma",
+      "breakpoints": true
     }
   ]
 }

@@ -1,9 +1,10 @@
-'use client'
-import { BookmarkCommand } from "@/modules/dashboard/components/add-bookmark-command";
+"use client";
+
+import { IconPickerDialog } from "@/modules/dashboard/folders/icon-picker-dialog";
 import React from "react";
 
 const Page = () => {
-  return <BookmarkCommand value="hello" onChange={() => "hello"} />;
+  return <IconPickerDialog />;
 };
 
 export default Page;

@@ -14,10 +14,10 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
 import { trpc } from "@/trpc/client";
 import AddFolder from "../folders/add-folder";
 import FolderAction from "../folders/folder-action";
+import { IconRenderer } from "../folders/icon-picker";
 
 export function AppSidebar() {
   const folders = trpc.folder.getAll.useQuery();
@@ -26,9 +26,6 @@ export function AppSidebar() {
       <SidebarHeader className="p-4">
         <div className="flex justify-between">
           <UserButton />
-          <Button variant="outline" className="bg-sidebar">
-            Create
-          </Button>
         </div>
       </SidebarHeader>
       <SidebarContent>
@@ -68,7 +65,14 @@ export function AppSidebar() {
                 <SidebarMenuItem key={folder.id}>
                   <SidebarMenuButton asChild>
                     <div className="flex justify-between">
-                      <Link href={`/bookmark/folder/${folder.id}`}>
+                      <Link
+                        className="flex gap-2"
+                        href={`/bookmark/folder/${folder.id}`}
+                      >
+                        <IconRenderer
+                          className="size-4"
+                          icon={folder.icon ?? "FolderIcon"}
+                        />
                         {folder.name}
                       </Link>
                       <FolderAction id={folder.id} />
