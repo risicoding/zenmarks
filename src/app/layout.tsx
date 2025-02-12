@@ -7,8 +7,8 @@ const RootLayout = ({ children }: { children: Readonly<React.ReactNode> }) => {
     <ClerkProvider
       signInUrl="/sign-in"
       signUpUrl="/sign-up"
-      signInForceRedirectUrl="/dashboard"
-      signUpForceRedirectUrl="/dashboard"
+      signInForceRedirectUrl="/bookmark"
+      signUpForceRedirectUrl="/bookmark"
     >
       <html>
         <body className="">
