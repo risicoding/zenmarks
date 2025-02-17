@@ -29,7 +29,7 @@ export const bookmarkRouter = createTRPCRouter({
       const { userId } = opts.ctx;
       const formattedUrl = convertToHttps(url);
 
-    const title='helo'
+      const title = await scrapeTitle(formattedUrl);
 
       const res = await db
         .insert(bookmarks)

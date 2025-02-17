@@ -25,7 +25,20 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader className="p-4">
         <div className="flex items-center justify-start gap-4">
-          <Image width={40} height={40} alt="Logo" src="/logo.svg" />
+          <Image
+            className="flex dark:hidden"
+            width={30}
+            height={30}
+            alt="Logo"
+            src="/logo-dark.svg"
+          />
+          <Image
+            className="hidden dark:flex"
+            width={30}
+            height={30}
+            alt="Logo"
+            src="/logo-light.svg"
+          />
           <h1 className="text-2xl font-bold">Zenmarks</h1>
         </div>
       </SidebarHeader>

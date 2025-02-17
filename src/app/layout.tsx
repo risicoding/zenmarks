@@ -13,9 +13,7 @@ const RootLayout = ({ children }: { children: Readonly<React.ReactNode> }) => {
         baseTheme: dark,
       }}
     >
-      <html>
-{children}
-      </html>
+      <html>{children}</html>
     </ClerkProvider>
   );
 };

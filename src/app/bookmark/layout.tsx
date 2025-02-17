@@ -5,6 +5,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import { Inter } from "next/font/google";
 import { TRPCProvider } from "@/trpc/client";
+import { DashboardWrapper } from "@/modules/dashboard/dashboard-wrapper";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -29,7 +30,7 @@ const DashboardLayout = ({
             <AppSidebar />
             <div className="w-full flex-col">
               <Navbar />
-              {children}
+              <DashboardWrapper>{children}</DashboardWrapper>
             </div>
           </SidebarProvider>
         </TRPCProvider>

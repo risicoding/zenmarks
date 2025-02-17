@@ -22,7 +22,7 @@ type BookmarkListProps = {
 
 // type BookmarkQueryType = inferRouterOutputs<AppRouter>["bookmark"]["query"];
 
-const Bookmark = ({ id, url, title  }: BookmarkProps) => {
+const Bookmark = ({ id, url, title }: BookmarkProps) => {
   const utils = trpc.useUtils();
   const deleteMutation = trpc.bookmark.delete.useMutation({
     onMutate: async () => {
@@ -47,7 +47,7 @@ const Bookmark = ({ id, url, title  }: BookmarkProps) => {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-4 my-4 rounded-lg border border-gray-200 p-4 transition hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-800"
+      className="my-4 flex items-center gap-4 rounded-lg border border-gray-200 p-4 transition hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-800"
     >
       <Avatar className="">
         <AvatarImage src={`${url}/favicon.ico`} alt={title} />

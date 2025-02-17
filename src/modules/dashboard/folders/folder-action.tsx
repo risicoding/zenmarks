@@ -59,7 +59,7 @@ const FolderAction = ({ id }: { id: string }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="bg-sidebar" variant="ghost">
+        <Button className="bg-transparent" variant="ghost">
           <MoreHorizontal />
         </Button>
       </DropdownMenuTrigger>
