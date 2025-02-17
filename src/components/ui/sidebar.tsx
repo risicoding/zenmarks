@@ -3,7 +3,7 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import {type VariantProps, cva } from "class-variance-authority"
-import { PanelLeft } from "lucide-react"
+import { AlignJustify  } from "lucide-react"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -278,7 +278,7 @@ const SidebarTrigger = React.forwardRef<
       }}
       {...props}
     >
-      <PanelLeft />
+      <AlignJustify />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )
@@ -523,7 +523,7 @@ const sidebarMenuButtonVariants = cva(
       size: {
         default: "h-8 text-sm",
         sm: "h-7 text-xs",
-        lg: "h-12 text-sm group-data-[collapsible=icon]:!p-0",
+        lg: "h-12 text-md group-data-[collapsible=icon]:!p-0",
       },
     },
     defaultVariants: {

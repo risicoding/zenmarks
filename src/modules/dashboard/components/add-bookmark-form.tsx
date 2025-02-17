@@ -32,12 +32,20 @@ export const inputSchema = z.object({
     .string()
     .refine((val) => relaxedURLRegex.test(val), { message: "Invallid URL" }),
   folderId: z.string().optional(),
+  isFavourite: z.boolean(),
 });
-const AddBookmarkForm = ({ onClose }: { onClose: () => void }) => {
+const AddBookmarkForm = ({
+  onClose,
+  isFavourite,
+}: {
+  onClose: () => void;
+  isFavourite: boolean;
+}) => {
   const form = useForm<z.infer<typeof inputSchema>>({
     resolver: zodResolver(inputSchema),
     defaultValues: {
       url: "",
+      isFavourite,
     },
   });
 
@@ -51,7 +59,7 @@ const AddBookmarkForm = ({ onClose }: { onClose: () => void }) => {
   });
 
   const onSubmit = async (data: z.infer<typeof inputSchema>) => {
-    console.log(data);
+    console.log("Form data :", data);
     await mutateAsync(data);
   };
 

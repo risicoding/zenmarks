@@ -3,7 +3,11 @@ interface OpenGraphResponse {
   hybridGraph: {
     title: string;
     description: string;
+    image: string;
     url: string;
+  };
+  error: {
+    code: number;
   };
 }
 
@@ -16,8 +20,7 @@ export const scrapeTitle = async (url: string) => {
     `https://opengraph.io/api/1.1/site/${encodedUrl}?app_id=${apiKey}`,
   );
   const data = (await res.json()) as OpenGraphResponse;
-  if (data.hybridGraph.title) {
-    return data.hybridGraph.title;
-  }
-  return null;
+  if (data.error.code === 102) return url;
+
+  return data.hybridGraph.title;
 };

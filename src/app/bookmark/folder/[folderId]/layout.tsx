@@ -10,7 +10,7 @@ const Layout = ({ children }: { children }) => {
   if (!data) return;
   return (
     <div className="px-4">
-      <BookmarkNavbar title={data?.name} folderId={params.folderId} />
+      <BookmarkNavbar icon={data.icon} title={data?.name} folderId={params.folderId} />
       {children}
     </div>
   );

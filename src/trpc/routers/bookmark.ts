@@ -17,17 +17,30 @@ const bookmarkSchema = z.object({
 
 export const bookmarkRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(z.object({ url: z.string(), folderId: z.string().optional() }))
+    .input(
+      z.object({
+        url: z.string(),
+        folderId: z.string().optional(),
+        isFavourite: z.boolean().optional(),
+      }),
+    )
     .mutation(async (opts) => {
-      const { url, folderId } = opts.input;
+      const { url, folderId, isFavourite } = opts.input;
       const { userId } = opts.ctx;
       const formattedUrl = convertToHttps(url);
 
-      const title = (await scrapeTitle(formattedUrl)) ?? url;
+    const title='helo'
 
       const res = await db
         .insert(bookmarks)
-        .values({ id: nanoid(), url: formattedUrl, title, folderId, userId })
+        .values({
+          id: nanoid(),
+          url: formattedUrl,
+          isFavourite,
+          title,
+          folderId,
+          userId,
+        })
         .returning();
       console.log(res);
       return res;

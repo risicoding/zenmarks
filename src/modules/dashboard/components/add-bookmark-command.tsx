@@ -16,8 +16,9 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { trpc } from "@/trpc/client";
-import { Check, ChevronsUpDown  } from "lucide-react";
+import { Check, ChevronsUpDown } from "lucide-react";
 import { useEffect, useState } from "react";
+import { IconRenderer } from "../folders/icon-picker";
 
 export const BookmarkCommand = ({
   value,
@@ -49,9 +50,19 @@ export const BookmarkCommand = ({
           role="combobox"
           aria-expanded={open}
         >
-          {selectedValue && folders !== undefined
-            ? folders.find((folder) => folder.slug === selectedValue)?.name
-            : "none"}
+          {selectedValue && folders !== undefined ? (
+            <div className="flex items-center gap-2">
+              <IconRenderer
+                icon={
+                  folders.find((folder) => folder.slug === selectedValue)
+                    ?.icon ?? "FolderIcon"
+                }
+              />
+              {folders.find((folder) => folder.slug === selectedValue)?.name}
+            </div>
+          ) : (
+            "none"
+          )}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -77,6 +88,7 @@ export const BookmarkCommand = ({
                     setOpen(false);
                   }}
                 >
+                  <IconRenderer icon={folder.icon} />
                   {folder.name}
                   <Check
                     className={cn(

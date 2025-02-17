@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { IconRenderer, useIconPicker } from "./icon-picker";
+import { useIconPicker } from "./icon-picker";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,40 +11,19 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { trpc } from "@/trpc/client";
 
 export const IconPickerDialog = ({
   children,
-  id,
+  onChange: setSelected,
+  value,
 }: {
   children: React.ReactNode;
-  id: string;
+  onChange: (arg: string) => void;
+  value: string;
 }) => {
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<null | string>(null);
 
-  const utils = trpc.useUtils();
-  const iconMutation = trpc.folder.update.useMutation({
-    onMutate: async (mutationData) => {
-      if (mutationData.icon === undefined) return;
-      await utils.folder.getAll.cancel();
-      const data = utils.folder.getAll.getData();
-
-      utils.folder.getAll.setData(undefined, (old) => {
-        if (!old) return [];
-        return old.map((folder) => {
-          if (folder.id === id) {
-            return { ...folder, icon: mutationData.icon ?? null };
-          }
-          return folder;
-        });
-      });
-      return { data };
-    },
-    onSuccess: async () => {
-      utils.folder.invalidate();
-    },
-  });
+  value.toString();
 
   return (
     <Dialog open={open} onOpenChange={(e) => setOpen(e)}>
@@ -59,7 +38,6 @@ export const IconPickerDialog = ({
           onChange={(icon) => {
             setSelected(icon);
             console.log(icon);
-            iconMutation.mutate({ id, icon });
             setOpen(false);
           }}
         />
@@ -92,7 +70,7 @@ export const IconPicker = ({
             onClick={() => onChange(name)}
             className="h-11"
           >
-            <Component className="!size-6 shrink-0" />
+            <Component className="!size-6 text-white shrink-0" />
             <span className="sr-only">{name}</span>
           </Button>
         ))}

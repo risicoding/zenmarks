@@ -18,6 +18,9 @@ import { Input } from "@/components/ui/input";
 import { trpc } from "@/trpc/client";
 import { DialogTitle, DialogTrigger } from "@radix-ui/react-dialog";
 import { useRef } from "react";
+import { IconPickerDialog } from "./icon-picker-dialog";
+import { IconRenderer } from "./icon-picker";
+import { ChevronsUpDown } from "lucide-react";
 
 const AddFolder = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -35,6 +38,7 @@ export default AddFolder;
 
 const inputSchema = z.object({
   name: z.string(),
+  icon: z.string(),
 });
 
 const AddFolderForm = () => {
@@ -43,6 +47,7 @@ const AddFolderForm = () => {
     resolver: zodResolver(inputSchema),
     defaultValues: {
       name: "",
+      icon: "FolderIcon",
     },
   });
 
@@ -75,6 +80,27 @@ const AddFolderForm = () => {
                   placeholder="Folder url here"
                   {...field}
                 />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="icon"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Icon</FormLabel>
+              <FormControl>
+                <IconPickerDialog onChange={field.onChange} value={field.value}>
+                  <div className="flex h-9 max-w-16 items-center justify-between rounded-md border border-input bg-transparent px-3 py-1 text-base text-muted-foreground shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm">
+                    <IconRenderer
+                      className="size-4 text-black dark:text-white"
+                      icon={form.getValues().icon}
+                    />
+                    <ChevronsUpDown className="size-3" />
+                  </div>
+                </IconPickerDialog>
               </FormControl>
               <FormMessage />
             </FormItem>

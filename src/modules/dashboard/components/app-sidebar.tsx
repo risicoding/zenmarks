@@ -13,8 +13,8 @@ import {
   SidebarHeader,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import { UserButton } from "@clerk/nextjs";
 import { trpc } from "@/trpc/client";
+import Image from "next/image";
 import AddFolder from "../folders/add-folder";
 import FolderAction from "../folders/folder-action";
 import { IconRenderer } from "../folders/icon-picker";
@@ -24,8 +24,9 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="p-4">
-        <div className="flex justify-between">
-          <UserButton />
+        <div className="flex items-center justify-start gap-4">
+          <Image width={40} height={40} alt="Logo" src="/logo.svg" />
+          <h1 className="text-2xl font-bold">Zenmarks</h1>
         </div>
       </SidebarHeader>
       <SidebarContent>
@@ -37,7 +38,7 @@ export function AppSidebar() {
                 <SidebarMenuButton asChild>
                   <Link href="/bookmark">
                     <Cloud />
-                    <span>All bookmarks</span>
+                    <span className="text-md">All bookmarks</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

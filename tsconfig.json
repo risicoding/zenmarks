@@ -10,6 +10,7 @@
     "isolatedModules": true,
     "noImplicitAny":false,
 
+
     /* Strictness */
     "strict": true,
     "noUncheckedIndexedAccess": true,

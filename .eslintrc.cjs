@@ -13,6 +13,7 @@ const config = {
   ],
   rules: {
     "@typescript-eslint/no-floating-promises": "off", // Disable for TypeScript
+    "@typescript-eslint/no-explicit-any": "off", // Disable for TypeScript
     "promise/no-return-in-finally": "off", // Disable for promises
 
     "@typescript-eslint/array-type": "off",

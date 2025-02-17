@@ -25,7 +25,7 @@ export const folders = pgTable("folders", {
   name: text().notNull(),
   slug: text().notNull(),
   userId: text().notNull(),
-  icon: text().default("FolderIcon"),
+  icon: text().notNull().default("FolderIcon"),
   createdAt: timestamp().defaultNow(),
   updatedAt: timestamp().defaultNow(),
 });

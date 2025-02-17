@@ -1,6 +1,6 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import "@/styles/globals.css";
-import { TRPCProvider } from "@/trpc/client";
+import { dark } from "@clerk/themes";
 
 const RootLayout = ({ children }: { children: Readonly<React.ReactNode> }) => {
   return (
@@ -9,11 +9,12 @@ const RootLayout = ({ children }: { children: Readonly<React.ReactNode> }) => {
       signUpUrl="/sign-up"
       signInForceRedirectUrl="/bookmark"
       signUpForceRedirectUrl="/bookmark"
+      appearance={{
+        baseTheme: dark,
+      }}
     >
       <html>
-        <body className="">
-          <TRPCProvider>{children}</TRPCProvider>
-        </body>
+{children}
       </html>
     </ClerkProvider>
   );
