@@ -1,65 +1,82 @@
-import React from "react";
-import { BentoGrid, BentoGridItem } from "./ui/bento-grid";
-import {
-  IconArrowWaveRightUp,
-  IconBoxAlignTopLeft,
-  IconClipboardCopy,
-  IconFileBroken,
-  IconSignature,
-} from "@tabler/icons-react";
-
-export function Features() {
-  return (
-    <BentoGrid className="mx-auto max-w-4xl">
-      {items.map((item, i) => (
-        <BentoGridItem
-          key={i}
-          title={item.title}
-          description={item.description}
-          header={item.header}
-          className={i === 3 || i === 6 ? "md:col-span-2" : ""}
-        />
-      ))}
-    </BentoGrid>
-  );
-}
-const Skeleton = () => (
-  <div className="flex h-full min-h-[6rem] w-full flex-1 rounded-xl bg-gradient-to-br from-neutral-200 to-neutral-100 dark:from-neutral-900 dark:to-neutral-800"></div>
-);
+import { NotepadText } from "lucide-react";
+import { IconRenderer } from "@/modules/dashboard/folders/icon-picker";
+import { or } from "drizzle-orm";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const items = [
   {
     title: "Organize Effortlessly",
     description:
       "Group your bookmarks into customizable folders and tags for quick and intuitive access.",
-    header: <Skeleton />,
-    icon: <IconBoxAlignTopLeft className="h-4 w-4 text-neutral-500" />,
+    icon: "QueueListIcon",
   },
   {
     title: "Seamless Search",
     description:
       "Find exactly what you need with lightning-fast search and smart filters.",
-    header: <Skeleton />,
-    icon: <IconArrowWaveRightUp className="h-4 w-4 text-neutral-500" />,
+    icon: "DocumentMagnifyingGlassIcon",
   },
   {
     title: "The Pursuit of Knowledge",
     description: "Join the quest for understanding and enlightenment.",
-    header: <Skeleton />,
-    icon: <IconClipboardCopy className="h-4 w-4 text-neutral-500" />,
+    icon: "AcademicCapIcon",
   },
   {
     title: "One-Click Save",
     description:
       "Add bookmarks instantly with a browser extension or mobile app. Save now, read later—your way.",
-    header: <Skeleton />,
-    icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
+    icon: "BookmarkIcon",
+  },
+  {
+    title: "Advanced filters",
+    icon: "AdjustmentsHorizontalIcon",
+    description: "Make your life easier with intuitive filters",
+isComing:true
   },
   {
     title: "Dark Mode",
     description:
       "Relax your eyes with a sleek dark theme. Zenmarks looks as good as it works, day or night.",
-    header: <Skeleton />,
-    icon: <IconFileBroken className="h-4 w-4 text-neutral-500" />,
+    icon: "MoonIcon",
   },
 ];
+
+type FeaturesCardProps = {
+  data: {
+    title: string;
+    description: string;
+    icon: string;
+  };
+isComing?:boolean
+};
+export const Features = () => {
+  return (
+    <section className="flex items-center justify-center">
+      <div className="flex max-w-3xl flex-wrap items-center justify-center">
+        {items.map((item, index) => (
+          <FeaturesCard isComing={item.isComing} data={item} key={index} />
+        ))}
+      </div>
+    </section>
+  );
+};
+
+const FeaturesCard = ({ data,isComing=false }: FeaturesCardProps) => {
+  return (
+    <div className="flex h-44 w-full flex-col items-start justify-center border border-gray-200/30 px-6 py-6 sm:w-1/2 md:w-1/2">
+      <div className="space-y-4">
+        <div className="flex items-center gap-4">
+          <IconRenderer className="size-6" icon={data.icon} />
+          <h3 className="font-medium">{data.title}</h3>
+{isComing&&(
+
+<Button className="rounded-full border-2" variant='outline'>ComingSoon</Button>
+)}
+        </div>
+        <p className="text-gray-400">{data.description}</p>
+        <Link href="/sign-in">Learn More</Link>
+      </div>
+    </div>
+  );
+};

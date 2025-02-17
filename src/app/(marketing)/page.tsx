@@ -3,11 +3,11 @@ import Hero from "./_components/hero";
 
 const Page = () => {
   return (
-    <div className="dark">
-      <Hero />
-      <section className="px-4 md:px-0">
+    <div className="dark flex w-full justify-center">
+      <div className="max-w-3xl">
+        <Hero />
         <Features />
-      </section>
+      </div>
     </div>
   );
 };

@@ -16,11 +16,11 @@ const Hero = () => {
         <h1 className="bg-gradient-to-b from-gray-200 to-gray-800 bg-clip-text text-4xl font-bold leading-tight text-transparent">
           Access all your bookmarks effortlessly
         </h1>
-        <p className="flex text-sm text-gray-500 sm:hidden">With zenmarks</p>
-        <p className="hidden text-sm text-gray-500 sm:flex">
-          zenmarks is a bookmarks management software helping people maintain
-          the chaos of their life.
-        </p>
+        <p className="flex text-sm text-gray-500">With zenmarks</p>
+        {/* <p className="hidden text-sm text-gray-500 sm:flex"> */}
+        {/*   zenmarks is a bookmarks management software helping people maintain */}
+        {/*   the chaos of their life. */}
+        {/* </p> */}
         <div className="flex items-center justify-center space-x-4">
           <Button>Get started</Button>
           <Button variant="outline">Contact</Button>
