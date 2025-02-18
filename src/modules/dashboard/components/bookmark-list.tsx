@@ -22,7 +22,7 @@ type BookmarkListProps = {
 
 // type BookmarkQueryType = inferRouterOutputs<AppRouter>["bookmark"]["query"];
 
-const Bookmark = ({ id, url, title }: BookmarkProps) => {
+const Bookmark = ({ id, url, title, favicon }: BookmarkProps) => {
   const utils = trpc.useUtils();
   const deleteMutation = trpc.bookmark.delete.useMutation({
     onMutate: async () => {
@@ -41,6 +41,7 @@ const Bookmark = ({ id, url, title }: BookmarkProps) => {
   });
 
   const updateMutation = trpc.bookmark.update.useMutation({});
+  console.log("favicon", favicon);
 
   return (
     <a
@@ -50,10 +51,10 @@ const Bookmark = ({ id, url, title }: BookmarkProps) => {
       className="my-4 flex items-center gap-4 rounded-lg border border-gray-200 p-4 transition hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-800"
     >
       <Avatar className="">
-        <AvatarImage src={`${url}/favicon.ico`} alt={title} />
+        <AvatarImage src={favicon ?? ""} alt={title} />
         <AvatarFallback className="">{title.slice(0, 2)}</AvatarFallback>
       </Avatar>
-      <div className="flex-1">
+      <div className="flex-1 overflow-clip">
         <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
           {title}
         </h3>
@@ -94,11 +95,12 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ bookmarks }) => {
     <div className="space-y-4">
       {bookmarks.map((bookmark, index) => (
         <Bookmark
+          favicon={bookmark.favicon}
+          image={bookmark.image}
           key={index}
           id={bookmark.id}
           url={bookmark.url}
           title={bookmark.title}
-          image={bookmark.image}
           isFavourite={bookmark.isFavourite}
         />
       ))}

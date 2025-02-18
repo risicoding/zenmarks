@@ -3,9 +3,12 @@ import { createTRPCRouter, protectedProcedure } from "../init";
 import { db } from "@/db";
 import { and, eq } from "drizzle-orm";
 import { convertToHttps } from "@/lib/url";
-import { scrapeTitle } from "@/lib/title";
+import { getOgData, scrapeTitle } from "@/lib/opengraph";
 import { z } from "zod";
 import { nanoid } from "nanoid";
+
+const googleFavicon = (domain: string) =>
+  `https://www.google.com/s2/favicons?domain=${domain}&sz=256`;
 
 const bookmarkSchema = z.object({
   id: z.string(),
@@ -29,7 +32,7 @@ export const bookmarkRouter = createTRPCRouter({
       const { userId } = opts.ctx;
       const formattedUrl = convertToHttps(url);
 
-      const title = await scrapeTitle(formattedUrl);
+      const ogData = await getOgData(formattedUrl);
 
       const res = await db
         .insert(bookmarks)
@@ -37,18 +40,19 @@ export const bookmarkRouter = createTRPCRouter({
           id: nanoid(),
           url: formattedUrl,
           isFavourite,
-          title,
+          title: ogData?.title ?? url,
+          favicon: ogData?.favicon ?? googleFavicon(url),
+          image: ogData?.image,
           folderId,
           userId,
         })
         .returning();
-      console.log(res);
+      // console.log(res);
       return res;
     }),
+
   query: protectedProcedure.query(async (opts) => {
     const { userId } = opts.ctx;
-
-    console.log("inside query");
 
     const res = await db
       .select()

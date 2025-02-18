@@ -15,6 +15,7 @@ export const bookmarks = pgTable("bookmarks", {
   title: varchar({ length: 255 }).notNull(),
   url: text().notNull(),
   image: text(),
+  favicon: text(),
   isFavourite: boolean().default(false),
   createdAt: timestamp().defaultNow(),
   updatedAt: timestamp().defaultNow(),
