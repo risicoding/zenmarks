@@ -52,7 +52,7 @@ isComing?:boolean
 };
 export const Features = () => {
   return (
-    <section className="flex items-center justify-center">
+    <section className="flex py-12 items-center justify-center">
       <div className="flex max-w-3xl flex-wrap items-center justify-center">
         {items.map((item, index) => (
           <FeaturesCard isComing={item.isComing} data={item} key={index} />
